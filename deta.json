@@ -1,0 +1,18 @@
+{
+  "name": "ck-price-monitor-bot",
+  "description": "Price monitoring and alerting for charleskeith.co.th", 
+  "runtime": "python3.9",
+  "env": [
+      {
+          "key": "BOT_TOKEN",
+          "description": "Telegram bot token from https://t.me/BotFather",
+          "required": true
+      },
+      {
+        "key": "MY_USER_ID",
+        "description": "Your Telegram User ID from https://t.me/userinfobot",
+        "required": true
+    }
+  ],
+  "cron": "5 minutes"
+}
