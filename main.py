@@ -16,7 +16,7 @@ load_dotenv()
 IS_DETA = os.environ.get('DETA_RUNTIME') == 'true'
 
 DETA_PROJECT_KEY = os.environ.get('DETA_PROJECT_KEY')
-DETA_DB_NAME = os.environ.get('DETA_DB_NAME', 'ck-items-local')
+DETA_DB_NAME = os.environ.get('DETA_DB_NAME', 'ck-items')
 
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 MY_USER_ID = os.environ.get('MY_USER_ID')
@@ -62,10 +62,12 @@ def main() -> None:
         for item in items:
             url = item['url']
             base_price = item['base_price']
+            user_id = item['user_id']
+
             price = parse_item_price(url)
             if price != item['base_price']:
                 bot.send_message(
-                    MY_USER_ID,
+                    user_id,
                     f'Новая цена на товар!\n{base_price:.2f} -> {price:.2f}\n{url}',
                 )
 
