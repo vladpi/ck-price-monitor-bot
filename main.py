@@ -3,11 +3,15 @@ import sys
 
 import httpx
 from bs4 import BeautifulSoup
-from deta import app
+from dotenv import load_dotenv
 from telegram.bot import Bot
 
+load_dotenv()
+
+IS_DETA = os.environ.get('DETA_RUNTIME') == 'true'
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 MY_USER_ID = os.environ.get('MY_USER_ID')
+
 ITEMS = [
     ('https://www.charleskeith.co.th/th-en/CK2-80270728_TAUPE_S-TH.html', 2590.0),
     ('https://www.charleskeith.co.th/th-en/CK2-20671280_IVORY_S-TH.html', 2790.0),
@@ -29,8 +33,7 @@ def parse_item_price(url: str) -> float:
         raise Exception(f'Цена не найдена на странице: {url}')
 
 
-@app.lib.cron()
-def main(_):
+def main():
     bot = Bot(BOT_TOKEN)
 
     try:
@@ -51,3 +54,14 @@ def main(_):
         )
 
         raise ex
+
+
+if IS_DETA:
+    from deta import app
+
+    @app.lib.cron()
+    def check_prices_task(_):
+        main()
+
+elif __name__ == '__main__':
+    main()
